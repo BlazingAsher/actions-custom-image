@@ -31,6 +31,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image name
+        run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
@@ -40,4 +43,4 @@ jobs:
           build-args: |
             UBUNTU_VERSION=${{ matrix.ubuntu_version }}
           tags: |
-            ghcr.io/${{ github.repository_owner }}/actions-custom-image:ubuntu-${{ matrix.ubuntu_version }}
+            ${{ env.IMAGE_NAME }}:ubuntu-${{ matrix.ubuntu_version }}
